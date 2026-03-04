@@ -27,6 +27,26 @@ function App() {
     setCurrentTable(role);
   };
 
+  const sortScoreAsc = () => {
+    setUserList([...userList].sort((a, b) => a.score - b.score));
+  };
+
+  const sortScoreDesc = () => {
+    setUserList([...userList].sort((a, b) => b.score - a.score));
+  };
+
+  const sortExperienceDaysAsc = () => {
+    setUserList(
+      [...userList].sort((a, b) => a.experienceDays - b.experienceDays),
+    );
+  };
+
+  const sortExperienceDaysDesc = () => {
+    setUserList(
+      [...userList].sort((a, b) => b.experienceDays - a.experienceDays),
+    );
+  };
+
   return (
     <>
       <div>
@@ -37,6 +57,24 @@ function App() {
         </button>
         <button onClick={() => changeCurrentTable("student")}>生徒のみ</button>
       </div>
+
+      <div>
+        {currentTable === "student" && (
+          <>
+            <h3>ソート</h3>
+            <button onClick={sortScoreAsc}>ハピネススコア 昇順</button>
+            <button onClick={sortScoreDesc}>ハピネススコア 降順</button>
+          </>
+        )}
+        {currentTable === "mentor" && (
+          <>
+            <h3>ソート</h3>
+            <button onClick={sortExperienceDaysAsc}>実務経験月数 昇順</button>
+            <button onClick={sortExperienceDaysDesc}>実務経験月数 降順</button>
+          </>
+        )}
+      </div>
+
       <div>
         {currentTable === "all" && (
           <UserTable
