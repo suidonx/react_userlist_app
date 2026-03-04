@@ -1,20 +1,31 @@
-import { USER_LIST } from "../../constants/userList";
+import type { USER_LIST } from "../../constants/defaultUserList";
 
-export const UserTable = (props) => {
+interface Props {
+  columns: string[];
+  keys: string[];
+  userList: typeof USER_LIST;
+}
+export const UserTable = (props: Props) => {
   const { columns, keys, userList } = props;
   return (
     <>
       <table>
         <thead>
-          {columns.map((column) => (
-            <th>{column}</th>
-          ))}
+          <tr>
+            {columns.map((column) => (
+              <th key={crypto.randomUUID()}>{column}</th>
+            ))}
+          </tr>
         </thead>
         <tbody>
-          {userList.map((user, index) => (
-            <tr key={index}>
+          {userList.map((user) => (
+            <tr key={crypto.randomUUID()}>
               {keys.map((key) => (
-                <td>{user[key]}</td>
+                <td key={crypto.randomUUID()}>
+                  {typeof user[key] === "object"
+                    ? user[key].join(", ")
+                    : user[key]}
+                </td>
               ))}
             </tr>
           ))}
