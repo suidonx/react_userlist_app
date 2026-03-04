@@ -1,7 +1,7 @@
 import { USER_LIST } from "../../constants/userList";
 
 export const UserTable = (props) => {
-  const { columns, keys } = props;
+  const { columns, keys, userList } = props;
   return (
     <>
       <table>
@@ -11,7 +11,7 @@ export const UserTable = (props) => {
           ))}
         </thead>
         <tbody>
-          {USER_LIST.map((user, index) => (
+          {userList.map((user, index) => (
             <tr key={index}>
               {keys.map((key) => (
                 <td>{user[key]}</td>
