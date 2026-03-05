@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { UserTable } from "./components/table/UserTable";
+import { AllTable } from "./components/table/AllTable";
 import { ALL_TABLE_COLUMNS, ALL_TABLE_KEYS } from "./constants/alltable";
 import {
   MENTOR_TABLE_COLUMNS,
@@ -11,6 +11,8 @@ import {
   STUDENT_TABLE_KEYS,
 } from "./constants/studentTable";
 import { USER_LIST } from "./constants/defaultUserList";
+import { StudentTable } from "./components/table/StudentTable";
+import { MentorTable } from "./components/table/MentorTable";
 
 function App() {
   const [currentTable, setCurrentTable] = useState<
@@ -18,7 +20,8 @@ function App() {
   >("all");
   const [addMode, setAddMode] = useState<"student" | "mentor">("student");
   const [userList, setUserList] = useState(USER_LIST);
-  const [appendUserList, setAppendUserList] = useState<typeof USER_LIST>([]);
+  const [studentList, setStudentList] = useState([]);
+  const [mentorList, setMentorList] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState(0);
@@ -35,34 +38,32 @@ function App() {
   const [availableStartCode, setAvailableStartCode] = useState(0);
   const [availableEndCode, setAvailableEndCode] = useState(0);
 
+  useEffect(() => {
+    setStudentList(userList.filter((user) => user.role === "student"));
+    setMentorList(userList.filter((user) => user.role === "mentor"));
+  }, [userList]);
+
   const changeCurrentTable = (role: "student" | "mentor" | "all") => {
-    if (role === "all") {
-      setUserList([...USER_LIST, ...appendUserList]);
-    } else {
-      setUserList(
-        [...USER_LIST, ...appendUserList].filter((user) => user.role === role),
-      );
-    }
     setCurrentTable(role);
   };
 
   const sortScoreAsc = () => {
-    setUserList([...userList].sort((a, b) => a.score - b.score));
+    setStudentList([...studentList].sort((a, b) => a.score - b.score));
   };
 
   const sortScoreDesc = () => {
-    setUserList([...userList].sort((a, b) => b.score - a.score));
+    setStudentList([...studentList].sort((a, b) => b.score - a.score));
   };
 
   const sortExperienceDaysAsc = () => {
-    setUserList(
-      [...userList].sort((a, b) => a.experienceDays - b.experienceDays),
+    setMentorList(
+      [...mentorList].sort((a, b) => a.experienceDays - b.experienceDays),
     );
   };
 
   const sortExperienceDaysDesc = () => {
-    setUserList(
-      [...userList].sort((a, b) => b.experienceDays - a.experienceDays),
+    setMentorList(
+      [...mentorList].sort((a, b) => b.experienceDays - a.experienceDays),
     );
   };
 
@@ -88,7 +89,6 @@ function App() {
         studyLangs,
         score,
       };
-      setAppendUserList([...appendUserList, userStudent]);
       setUserList([...userList, userStudent]);
     } else {
       const userMentor = {
@@ -98,7 +98,6 @@ function App() {
         availableStartCode,
         availableEndCode,
       };
-      setAppendUserList([...appendUserList, userMentor]);
       setUserList([...userList, userMentor]);
     }
   };
@@ -328,24 +327,26 @@ function App() {
 
       <div>
         {currentTable === "all" && (
-          <UserTable
+          <AllTable
             columns={ALL_TABLE_COLUMNS}
             keys={ALL_TABLE_KEYS}
             userList={userList}
           />
         )}
         {currentTable === "mentor" && (
-          <UserTable
+          <MentorTable
             columns={MENTOR_TABLE_COLUMNS}
             keys={MENTOR_TABLE_KEYS}
             userList={userList}
+            mentorList={mentorList}
           />
         )}
         {currentTable === "student" && (
-          <UserTable
+          <StudentTable
             columns={STUDENT_TABLE_COLUMNS}
             keys={STUDENT_TABLE_KEYS}
             userList={userList}
+            studentList={studentList}
           />
         )}
       </div>
