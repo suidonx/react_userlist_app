@@ -37,6 +37,7 @@ function App() {
 
   const [currentTable, setCurrentTable] = useState<AddUserMode | "all">("all");
 
+  // 初回レンダリング時にstudent、mentorを更新
   useEffect(() => {
     setStudentList(userList.filter((user) => isStudent(user)));
     setMentorList(userList.filter((user) => isMentor(user)));

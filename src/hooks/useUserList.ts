@@ -10,6 +10,7 @@ export const useUserList = () => {
   const [studentList, setStudentList] = useState<Student[]>([]);
   const [mentorList, setMentorList] = useState<Mentor[]>([]);
 
+  // 生徒について、対応可能なメンターを計算する
   const getAvailableMentorsName = (taskCode: number): string => {
     const availableMentors = userList
       .filter((user) => user.role === "mentor")
@@ -23,6 +24,7 @@ export const useUserList = () => {
     return availableMentorsName;
   };
 
+  // メンターについて、対応可能な生徒を計算する
   const getAvailableStudentsName = (
     startTaskCode: number,
     endTaskCode: number,
@@ -38,6 +40,7 @@ export const useUserList = () => {
     return availableStudentsName;
   };
 
+  // テーブルにユーザーの情報を出力する
   const renderUserData = (user: User, key: string) => {
     if (isStudent(user) && key === "availableMentors") {
       return getAvailableMentorsName(user.taskCode);

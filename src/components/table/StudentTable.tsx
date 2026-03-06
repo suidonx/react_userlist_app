@@ -14,7 +14,7 @@ export const StudentTable = (props: Props) => {
 
   return (
     <>
-      <table className="bg-sky-200 border border-gray-500 m-5">
+      <table className="bg-sky-200 border border-gray-500 m-5 text-center mx-auto">
         <thead>
           <tr>
             {columns.map((column) => (
