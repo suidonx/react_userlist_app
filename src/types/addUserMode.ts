@@ -1,1 +1,1 @@
-export type AddUserMode = "student" | "mentor" | "all";
+export type AddUserMode = "student" | "mentor";
