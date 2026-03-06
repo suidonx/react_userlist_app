@@ -26,6 +26,10 @@ function App() {
     setStudentList,
     mentorList,
     setMentorList,
+    sortScoreAsc,
+    sortScoreDesc,
+    sortExperienceDaysAsc,
+    sortExperienceDaysDesc,
   } = useUserList();
 
   const [currentTable, setCurrentTable] = useState<AddUserMode | "all">("all");
@@ -54,26 +58,6 @@ function App() {
 
   const changeCurrentTable = (role: "student" | "mentor" | "all") => {
     setCurrentTable(role);
-  };
-
-  const sortScoreAsc = () => {
-    setStudentList([...studentList].sort((a, b) => a.score - b.score));
-  };
-
-  const sortScoreDesc = () => {
-    setStudentList([...studentList].sort((a, b) => b.score - a.score));
-  };
-
-  const sortExperienceDaysAsc = () => {
-    setMentorList(
-      [...mentorList].sort((a, b) => a.experienceDays - b.experienceDays),
-    );
-  };
-
-  const sortExperienceDaysDesc = () => {
-    setMentorList(
-      [...mentorList].sort((a, b) => b.experienceDays - a.experienceDays),
-    );
   };
 
   const appendUser = (e: SubmitEvent) => {

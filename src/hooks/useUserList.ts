@@ -63,6 +63,27 @@ export const useUserList = () => {
     return "";
   };
 
+  // ソート処理
+  const sortScoreAsc = () => {
+    setStudentList([...studentList].sort((a, b) => a.score - b.score));
+  };
+
+  const sortScoreDesc = () => {
+    setStudentList([...studentList].sort((a, b) => b.score - a.score));
+  };
+
+  const sortExperienceDaysAsc = () => {
+    setMentorList(
+      [...mentorList].sort((a, b) => a.experienceDays - b.experienceDays),
+    );
+  };
+
+  const sortExperienceDaysDesc = () => {
+    setMentorList(
+      [...mentorList].sort((a, b) => b.experienceDays - a.experienceDays),
+    );
+  };
+
   return {
     userList,
     setUserList,
@@ -73,5 +94,9 @@ export const useUserList = () => {
     getAvailableMentorsName,
     getAvailableStudentsName,
     renderUserData,
+    sortScoreAsc,
+    sortScoreDesc,
+    sortExperienceDaysAsc,
+    sortExperienceDaysDesc,
   };
 };
