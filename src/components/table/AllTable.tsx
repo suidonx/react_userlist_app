@@ -13,11 +13,16 @@ export const AllTable = (props: Props) => {
 
   return (
     <>
-      <table>
+      <table className="bg-sky-200 border border-gray-500 m-5">
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={column}>{column}</th>
+              <th
+                className="border border-gray-600 bg-sky-400 text-base"
+                key={column}
+              >
+                {column}
+              </th>
             ))}
           </tr>
         </thead>
@@ -25,7 +30,9 @@ export const AllTable = (props: Props) => {
           {userList.map((user, index) => (
             <tr key={index}>
               {keys.map((key: (typeof ALL_TABLE_KEYS)[number]) => (
-                <td key={key}>{renderUserData(user, key)}</td>
+                <td className="border border-gray-600 p-1 text-sm" key={key}>
+                  {renderUserData(user, key)}
+                </td>
               ))}
             </tr>
           ))}

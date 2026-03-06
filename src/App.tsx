@@ -44,7 +44,18 @@ function App() {
 
   return (
     <>
-      <ChangeDisplayButton setCurrentTable={setCurrentTable} />
+      <h1 className="text-5xl font-semibold text-center my-7">
+        React UserList App
+      </h1>
+      <p className="text-center text-gray-500">
+        userListを表示するアプリです。
+        <br />
+        ロールごとにの表示に切り替えたり、ソートできたり、ユーザーの新規追加ができます。
+      </p>
+      <ChangeDisplayButton
+        currentTable={currentTable}
+        setCurrentTable={setCurrentTable}
+      />
 
       <SortButton
         currentTable={currentTable}
@@ -53,8 +64,6 @@ function App() {
         sortExperienceDaysAsc={sortExperienceDaysAsc}
         sortExperienceDaysDesc={sortExperienceDaysDesc}
       />
-
-      <AddInputButton userList={userList} setUserList={setUserList} />
 
       {currentTable === "all" && (
         <AllTable
@@ -77,6 +86,8 @@ function App() {
           studentList={studentList}
         />
       )}
+
+      <AddInputButton userList={userList} setUserList={setUserList} />
     </>
   );
 }

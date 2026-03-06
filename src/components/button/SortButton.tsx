@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { AddUserMode } from "../../types/addUserMode";
 
 interface Props {
@@ -15,20 +16,45 @@ export const SortButton = (props: Props) => {
     sortExperienceDaysAsc,
     sortExperienceDaysDesc,
   } = props;
+
   return (
-    <div>
+    <div className="text-center mt-5 mb-3">
       {currentTable === "student" && (
         <>
-          <h3>ソート</h3>
-          <button onClick={sortScoreAsc}>ハピネススコア 昇順</button>
-          <button onClick={sortScoreDesc}>ハピネススコア 降順</button>
+          <h3 className="text-2xl font-semibold">ソート</h3>
+          <div className="mt-3">
+            <button
+              onClick={sortScoreAsc}
+              className="bg-olive-500 text-white px-4 py-2 rounded-lg"
+            >
+              ハピネススコア 昇順
+            </button>
+            <button
+              onClick={sortScoreDesc}
+              className="bg-slate-500 text-white px-4 py-2 rounded-lg"
+            >
+              ハピネススコア 降順
+            </button>
+          </div>
         </>
       )}
       {currentTable === "mentor" && (
         <>
-          <h3>ソート</h3>
-          <button onClick={sortExperienceDaysAsc}>実務経験月数 昇順</button>
-          <button onClick={sortExperienceDaysDesc}>実務経験月数 降順</button>
+          <h3 className="text-2xl font-semibold">ソート</h3>
+          <div className="mt-3">
+            <button
+              onClick={sortExperienceDaysAsc}
+              className="bg-olive-500 text-white px-4 py-2 rounded-lg"
+            >
+              実務経験月数 昇順
+            </button>
+            <button
+              onClick={sortExperienceDaysDesc}
+              className="bg-slate-500 text-white px-4 py-2 rounded-lg"
+            >
+              実務経験月数 降順
+            </button>
+          </div>
         </>
       )}
     </div>
