@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { USER_LIST } from "../constants/defaultUserList";
-import type { Mentor } from "./types/mentor";
-import type { Student } from "./types/student";
-import type { User } from "./types/user";
+import type { Mentor } from "../types/mentor";
+import type { Student } from "../types/student";
+import type { User } from "../types/user";
 import { isMentor, isStudent } from "../utils/typeGuard";
 
 export const useUserList = () => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import type { AddUserMode } from "../../types/addUserMode";
 import type { User } from "../../types/user";
 import type { Student } from "../../types/student";
@@ -32,7 +32,7 @@ export const AddInputButton = (props: Props) => {
   const [availableEndCode, setAvailableEndCode] = useState(0);
 
   // 新規ユーザーを追加する関数
-  const appendUser = (e: SubmitEvent) => {
+  const appendUser = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const userCommon = {
       id: userList.length + 1,

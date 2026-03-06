@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { AddUserMode } from "../../types/addUserMode";
 
 interface Props {
