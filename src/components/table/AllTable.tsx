@@ -1,36 +1,15 @@
-import type { USER_LIST } from "../../constants/defaultUserList";
+import type { ALL_TABLE_KEYS } from "../../constants/allTable";
+import { useUserList } from "../../hooks/useUserList";
+import type { User } from "../../types/user";
 
 interface Props {
   columns: string[];
-  keys: string[];
-  userList: typeof USER_LIST;
+  keys: typeof ALL_TABLE_KEYS;
+  userList: User[];
 }
 export const AllTable = (props: Props) => {
   const { columns, keys, userList } = props;
-
-  const getAvailableMentorsName = (taskCode: number): string => {
-    const availableMentors = userList
-      .filter((user) => user.role === "mentor")
-      .filter(
-        (user) =>
-          user.availableStartCode <= taskCode &&
-          taskCode <= user.availableEndCode,
-      )
-      .map((user) => user.name);
-    const availableMentorsName = availableMentors.join(", ");
-    return availableMentorsName;
-  };
-  const getAvailableStudentsName = (startTaskCode, endTaskCode) => {
-    const availableStudents = userList
-      .filter((user) => user.role === "student")
-      .filter(
-        (user) =>
-          startTaskCode <= user.taskCode && user.taskCode <= endTaskCode,
-      )
-      .map((user) => user.name);
-    const availableStudentsName = availableStudents.join(", ");
-    return availableStudentsName;
-  };
+  const { renderUserData } = useUserList();
 
   return (
     <>
@@ -38,26 +17,15 @@ export const AllTable = (props: Props) => {
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={crypto.randomUUID()}>{column}</th>
+              <th key={column}>{column}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {userList.map((user) => (
-            <tr key={crypto.randomUUID()}>
-              {keys.map((key) => (
-                <td key={crypto.randomUUID()}>
-                  {key === "availableMentors" &&
-                    getAvailableMentorsName(user.taskCode)}
-                  {key === "availableStudents" &&
-                    getAvailableStudentsName(
-                      user.availableStartCode,
-                      user.availableEndCode,
-                    )}
-                  {typeof user[key] === "object"
-                    ? user[key].join(", ")
-                    : user[key]}
-                </td>
+          {userList.map((user, index) => (
+            <tr key={index}>
+              {keys.map((key: (typeof ALL_TABLE_KEYS)[number]) => (
+                <td key={key}>{renderUserData(user, key)}</td>
               ))}
             </tr>
           ))}

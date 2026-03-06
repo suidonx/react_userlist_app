@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { AllTable } from "./components/table/AllTable";
-import { ALL_TABLE_COLUMNS, ALL_TABLE_KEYS } from "./constants/alltable";
+import { ALL_TABLE_COLUMNS, ALL_TABLE_KEYS } from "./constants/allTable";
 import {
   MENTOR_TABLE_COLUMNS,
   MENTOR_TABLE_KEYS,
@@ -10,18 +10,27 @@ import {
   STUDENT_TABLE_COLUMNS,
   STUDENT_TABLE_KEYS,
 } from "./constants/studentTable";
-import { USER_LIST } from "./constants/defaultUserList";
 import { StudentTable } from "./components/table/StudentTable";
 import { MentorTable } from "./components/table/MentorTable";
 
+import type { AddUserMode } from "./types/addUserMode";
+import { useUserList } from "./hooks/useUserList";
+
+import { isMentor, isStudent } from "./utils/typeGuard";
+
 function App() {
-  const [currentTable, setCurrentTable] = useState<
-    "student" | "mentor" | "all"
-  >("all");
-  const [addMode, setAddMode] = useState<"student" | "mentor">("student");
-  const [userList, setUserList] = useState(USER_LIST);
-  const [studentList, setStudentList] = useState([]);
-  const [mentorList, setMentorList] = useState([]);
+  const {
+    userList,
+    setUserList,
+    studentList,
+    setStudentList,
+    mentorList,
+    setMentorList,
+  } = useUserList();
+
+  const [currentTable, setCurrentTable] = useState<AddUserMode | "all">("all");
+  const [AddUserMode, setAddMode] = useState<AddUserMode>("student");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState(0);
@@ -39,8 +48,8 @@ function App() {
   const [availableEndCode, setAvailableEndCode] = useState(0);
 
   useEffect(() => {
-    setStudentList(userList.filter((user) => user.role === "student"));
-    setMentorList(userList.filter((user) => user.role === "mentor"));
+    setStudentList(userList.filter((user) => isStudent(user)));
+    setMentorList(userList.filter((user) => isMentor(user)));
   }, [userList]);
 
   const changeCurrentTable = (role: "student" | "mentor" | "all") => {
@@ -72,7 +81,7 @@ function App() {
     const userCommon = {
       id: userList.length + 1,
       name,
-      role: addMode,
+      role: AddUserMode,
       email,
       age,
       postCode,
@@ -81,7 +90,7 @@ function App() {
       url,
     };
 
-    if (addMode === "student") {
+    if (AddUserMode === "student") {
       const userStudent = {
         ...userCommon,
         studyMinutes,
@@ -139,16 +148,16 @@ function App() {
               type="radio"
               id="studentRadioTab"
               name="radio"
-              onClick={() => setAddMode("student")}
-              checked={addMode === "student"}
+              onChange={() => setAddMode("student")}
+              checked={AddUserMode === "student"}
             />
             <label htmlFor="mentorRadioTab">メンターを登録</label>
             <input
               type="radio"
               id="mentorRadioTab"
               name="radio"
-              onClick={() => setAddMode("mentor")}
-              checked={addMode === "mentor"}
+              onChange={() => setAddMode("mentor")}
+              checked={AddUserMode === "mentor"}
             />
           </div>
           <form onSubmit={(e) => appendUser(e)}>
@@ -222,7 +231,7 @@ function App() {
                 required
               />
             </div>
-            {addMode === "student" ? (
+            {AddUserMode === "student" ? (
               <>
                 <div>
                   <label htmlFor="studyMinutesForm">勉強時間</label>
@@ -337,7 +346,6 @@ function App() {
           <MentorTable
             columns={MENTOR_TABLE_COLUMNS}
             keys={MENTOR_TABLE_KEYS}
-            userList={userList}
             mentorList={mentorList}
           />
         )}
@@ -345,7 +353,6 @@ function App() {
           <StudentTable
             columns={STUDENT_TABLE_COLUMNS}
             keys={STUDENT_TABLE_KEYS}
-            userList={userList}
             studentList={studentList}
           />
         )}

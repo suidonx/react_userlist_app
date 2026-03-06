@@ -1,36 +1,16 @@
-import type { USER_LIST } from "../../constants/defaultUserList";
+import type { MENTOR_TABLE_KEYS } from "../../constants/mentorTable";
+import { useUserList } from "../../hooks/useUserList";
+import type { Mentor } from "../../types/mentor";
 
 interface Props {
   columns: string[];
-  keys: string[];
-  userList: typeof USER_LIST;
+  keys: typeof MENTOR_TABLE_KEYS;
+  mentorList: Mentor[];
 }
-export const MentorTable = (props: Props) => {
-  const { columns, keys, userList, mentorList } = props;
 
-  const getAvailableMentorsName = (taskCode: number): string => {
-    const availableMentors = userList
-      .filter((user) => user.role === "mentor")
-      .filter(
-        (user) =>
-          user.availableStartCode <= taskCode &&
-          taskCode <= user.availableEndCode,
-      )
-      .map((user) => user.name);
-    const availableMentorsName = availableMentors.join(", ");
-    return availableMentorsName;
-  };
-  const getAvailableStudentsName = (startTaskCode, endTaskCode) => {
-    const availableStudents = userList
-      .filter((user) => user.role === "student")
-      .filter(
-        (user) =>
-          startTaskCode <= user.taskCode && user.taskCode <= endTaskCode,
-      )
-      .map((user) => user.name);
-    const availableStudentsName = availableStudents.join(", ");
-    return availableStudentsName;
-  };
+export const MentorTable = (props: Props) => {
+  const { columns, keys, mentorList } = props;
+  const { renderUserData } = useUserList();
 
   return (
     <>
@@ -38,26 +18,15 @@ export const MentorTable = (props: Props) => {
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={crypto.randomUUID()}>{column}</th>
+              <th key={column}>{column}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {mentorList.map((user) => (
-            <tr key={crypto.randomUUID()}>
+          {mentorList.map((user, index) => (
+            <tr key={index}>
               {keys.map((key) => (
-                <td key={crypto.randomUUID()}>
-                  {key === "availableMentors" &&
-                    getAvailableMentorsName(user.taskCode)}
-                  {key === "availableStudents" &&
-                    getAvailableStudentsName(
-                      user.availableStartCode,
-                      user.availableEndCode,
-                    )}
-                  {typeof user[key] === "object"
-                    ? user[key].join(", ")
-                    : user[key]}
-                </td>
+                <td key={key}>{renderUserData(user, key)}</td>
               ))}
             </tr>
           ))}

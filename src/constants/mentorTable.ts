@@ -28,4 +28,4 @@ export const MENTOR_TABLE_KEYS = [
   "availableStartCode",
   "availableEndCode",
   "availableStudents", // USER_LISTとの差分
-];
+] as const;

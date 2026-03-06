@@ -28,4 +28,4 @@ export const STUDENT_TABLE_KEYS = [
   "studyLangs",
   "score",
   "availableMentors", // USER_LISTとの差分
-];
+] as const;
