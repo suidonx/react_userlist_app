@@ -18,6 +18,7 @@ import { useUserList } from "./hooks/useUserList";
 
 import { isMentor, isStudent } from "./utils/typeGuard";
 import { AddInputButton } from "./components/button/AddInputButton";
+import { ChangeDisplayButton } from "./components/button/ChangeDisplayButton";
 
 function App() {
   const {
@@ -40,20 +41,10 @@ function App() {
     setMentorList(userList.filter((user) => isMentor(user)));
   }, [userList]);
 
-  const changeCurrentTable = (role: "student" | "mentor" | "all") => {
-    setCurrentTable(role);
-  };
-
   return (
     <>
-      <div>
-        <h3>表示切り替えボタン</h3>
-        <button onClick={() => changeCurrentTable("all")}>全員</button>
-        <button onClick={() => changeCurrentTable("mentor")}>
-          メンターのみ
-        </button>
-        <button onClick={() => changeCurrentTable("student")}>生徒のみ</button>
-      </div>
+      <ChangeDisplayButton setCurrentTable={setCurrentTable} />
+
 
       <div>
         {currentTable === "student" && (
