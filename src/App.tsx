@@ -19,6 +19,7 @@ import { useUserList } from "./hooks/useUserList";
 import { isMentor, isStudent } from "./utils/typeGuard";
 import { AddInputButton } from "./components/button/AddInputButton";
 import { ChangeDisplayButton } from "./components/button/ChangeDisplayButton";
+import { SortButton } from "./components/button/SortButton";
 
 function App() {
   const {
@@ -45,51 +46,37 @@ function App() {
     <>
       <ChangeDisplayButton setCurrentTable={setCurrentTable} />
 
-
-      <div>
-        {currentTable === "student" && (
-          <>
-            <h3>ソート</h3>
-            <button onClick={sortScoreAsc}>ハピネススコア 昇順</button>
-            <button onClick={sortScoreDesc}>ハピネススコア 降順</button>
-          </>
-        )}
-        {currentTable === "mentor" && (
-          <>
-            <h3>ソート</h3>
-            <button onClick={sortExperienceDaysAsc}>実務経験月数 昇順</button>
-            <button onClick={sortExperienceDaysDesc}>実務経験月数 降順</button>
-          </>
-        )}
-      </div>
+      <SortButton
+        currentTable={currentTable}
+        sortScoreAsc={sortScoreAsc}
+        sortScoreDesc={sortScoreDesc}
+        sortExperienceDaysAsc={sortExperienceDaysAsc}
+        sortExperienceDaysDesc={sortExperienceDaysDesc}
+      />
 
       <AddInputButton userList={userList} setUserList={setUserList} />
 
-      <hr />
-
-      <div>
-        {currentTable === "all" && (
-          <AllTable
-            columns={ALL_TABLE_COLUMNS}
-            keys={ALL_TABLE_KEYS}
-            userList={userList}
-          />
-        )}
-        {currentTable === "mentor" && (
-          <MentorTable
-            columns={MENTOR_TABLE_COLUMNS}
-            keys={MENTOR_TABLE_KEYS}
-            mentorList={mentorList}
-          />
-        )}
-        {currentTable === "student" && (
-          <StudentTable
-            columns={STUDENT_TABLE_COLUMNS}
-            keys={STUDENT_TABLE_KEYS}
-            studentList={studentList}
-          />
-        )}
-      </div>
+      {currentTable === "all" && (
+        <AllTable
+          columns={ALL_TABLE_COLUMNS}
+          keys={ALL_TABLE_KEYS}
+          userList={userList}
+        />
+      )}
+      {currentTable === "mentor" && (
+        <MentorTable
+          columns={MENTOR_TABLE_COLUMNS}
+          keys={MENTOR_TABLE_KEYS}
+          mentorList={mentorList}
+        />
+      )}
+      {currentTable === "student" && (
+        <StudentTable
+          columns={STUDENT_TABLE_COLUMNS}
+          keys={STUDENT_TABLE_KEYS}
+          studentList={studentList}
+        />
+      )}
     </>
   );
 }
