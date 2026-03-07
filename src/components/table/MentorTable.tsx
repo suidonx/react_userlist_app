@@ -1,16 +1,15 @@
 import type { MENTOR_TABLE_KEYS } from "../../constants/mentorTable";
-import { useUserList } from "../../hooks/useUserList";
 import type { Mentor } from "../../types/mentor";
 
 interface Props {
   columns: string[];
   keys: typeof MENTOR_TABLE_KEYS;
   mentorList: Mentor[];
+  renderUserData: (user: Mentor, key: string) => string | number;
 }
 
 export const MentorTable = (props: Props) => {
-  const { columns, keys, mentorList } = props;
-  const { renderUserData } = useUserList();
+  const { columns, keys, mentorList, renderUserData } = props;
 
   return (
     <>

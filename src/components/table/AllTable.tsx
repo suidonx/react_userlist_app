@@ -1,15 +1,14 @@
 import type { ALL_TABLE_KEYS } from "../../constants/allTable";
-import { useUserList } from "../../hooks/useUserList";
 import type { User } from "../../types/user";
 
 interface Props {
   columns: string[];
   keys: typeof ALL_TABLE_KEYS;
   userList: User[];
+  renderUserData: (user: User, key: string) => string | number;
 }
 export const AllTable = (props: Props) => {
-  const { columns, keys, userList } = props;
-  const { renderUserData } = useUserList();
+  const { columns, keys, userList, renderUserData } = props;
 
   return (
     <>

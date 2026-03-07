@@ -34,6 +34,12 @@ export const AddInputButton = (props: Props) => {
   // 新規ユーザーを追加する関数
   const appendUser = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // 名前が空文字の時は処理を戻す
+    if (name.trim() === "") {
+      return;
+    }
+
     const userCommon = {
       id: userList.length + 1,
       name,
@@ -221,7 +227,7 @@ export const AddInputButton = (props: Props) => {
                   課題番号
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   id="taskCodeForm"
                   value={taskCode}
                   onChange={(e) => setTaskCode(Number(e.target.value))}

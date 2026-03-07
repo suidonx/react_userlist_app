@@ -6,7 +6,7 @@ import type { User } from "../types/user";
 import { isMentor, isStudent } from "../utils/typeGuard";
 
 export const useUserList = () => {
-  const [userList, setUserList] = useState<User[]>(USER_LIST);
+  const [userList, setUserList] = useState<User[]>([...USER_LIST]);
   const [studentList, setStudentList] = useState<Student[]>([]);
   const [mentorList, setMentorList] = useState<Mentor[]>([]);
 
@@ -41,7 +41,7 @@ export const useUserList = () => {
   };
 
   // テーブルにユーザーの情報を出力する
-  const renderUserData = (user: User, key: string) => {
+  const renderUserData = (user: Mentor | Student, key: string) => {
     if (isStudent(user) && key === "availableMentors") {
       return getAvailableMentorsName(user.taskCode);
     }

@@ -33,11 +33,12 @@ function App() {
     sortScoreDesc,
     sortExperienceDaysAsc,
     sortExperienceDaysDesc,
+    renderUserData,
   } = useUserList();
 
   const [currentTable, setCurrentTable] = useState<AddUserMode | "all">("all");
 
-  // 初回レンダリング時にstudent、mentorを更新
+  // userList更新時にstudent、mentorを更新
   useEffect(() => {
     setStudentList(userList.filter((user) => isStudent(user)));
     setMentorList(userList.filter((user) => isMentor(user)));
@@ -51,7 +52,7 @@ function App() {
       <p className="text-center text-gray-500">
         userListを表示するアプリです。
         <br />
-        ロールごとにの表示に切り替えたり、ソートできたり、ユーザーの新規追加ができます。
+        ロールごとの表示に切り替えたり、ソートできたり、ユーザーの新規追加ができます。
       </p>
       <ChangeDisplayButton
         currentTable={currentTable}
@@ -71,6 +72,7 @@ function App() {
           columns={ALL_TABLE_COLUMNS}
           keys={ALL_TABLE_KEYS}
           userList={userList}
+          renderUserData={renderUserData}
         />
       )}
       {currentTable === "mentor" && (
@@ -78,6 +80,7 @@ function App() {
           columns={MENTOR_TABLE_COLUMNS}
           keys={MENTOR_TABLE_KEYS}
           mentorList={mentorList}
+          renderUserData={renderUserData}
         />
       )}
       {currentTable === "student" && (
@@ -85,6 +88,7 @@ function App() {
           columns={STUDENT_TABLE_COLUMNS}
           keys={STUDENT_TABLE_KEYS}
           studentList={studentList}
+          renderUserData={renderUserData}
         />
       )}
 
