@@ -1,7 +1,7 @@
-import type { AddUserMode } from "../../types/addUserMode";
+import type { UserRole } from "../../types/userRole";
 
 interface Props {
-  currentTable: AddUserMode | "all";
+  currentTable: UserRole | "all";
   sortScoreAsc: () => void;
   sortScoreDesc: () => void;
   sortExperienceDaysAsc: () => void;

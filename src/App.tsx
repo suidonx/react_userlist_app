@@ -13,7 +13,7 @@ import {
 import { StudentTable } from "./components/table/StudentTable";
 import { MentorTable } from "./components/table/MentorTable";
 
-import type { AddUserMode } from "./types/addUserMode";
+import type { UserRole } from "./types/userRole";
 import { useUserList } from "./hooks/useUserList";
 
 import { isMentor, isStudent } from "./utils/typeGuard";
@@ -36,7 +36,7 @@ function App() {
     renderUserData,
   } = useUserList();
 
-  const [currentTable, setCurrentTable] = useState<AddUserMode | "all">("all");
+  const [currentTable, setCurrentTable] = useState<UserRole | "all">("all");
 
   // userList更新時にstudent、mentorを更新
   useEffect(() => {

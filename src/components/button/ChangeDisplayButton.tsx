@@ -1,8 +1,8 @@
-import type { AddUserMode } from "../../types/addUserMode";
+import type { UserRole } from "../../types/userRole";
 
 interface Props {
-  currentTable: AddUserMode | "all";
-  setCurrentTable: (addUserMode: AddUserMode | "all") => void;
+  currentTable: UserRole | "all";
+  setCurrentTable: (addUserMode: UserRole | "all") => void;
 }
 
 export const ChangeDisplayButton = (props: Props) => {

@@ -1,39 +1,79 @@
-import { useState, type FormEvent } from "react";
-import type { AddUserMode } from "../../types/addUserMode";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import type { User } from "../../types/user";
 import type { Student } from "../../types/student";
 import type { Mentor } from "../../types/mentor";
+import type { UserRole } from "../../types/userRole";
 
 interface Props {
   userList: User[];
   setUserList: (userList: User[]) => void;
 }
 
+interface UserForm {
+  name: string;
+  email: string;
+  age: number;
+  postCode: string;
+  phone: string;
+  hobbies: string[];
+  url: string;
+  studyMinutes: number;
+  taskCode: number;
+  studyLangs: string[];
+  score: number;
+  experienceDays: number;
+  useLangs: string[];
+  availableStartCode: number;
+  availableEndCode: number;
+}
+
+const initUserForm = {
+  name: "",
+  email: "",
+  age: 0,
+  postCode: "",
+  phone: "",
+  hobbies: [],
+  url: "",
+  studyMinutes: 0,
+  taskCode: 0,
+  studyLangs: [],
+  score: 0,
+  experienceDays: 0,
+  useLangs: [],
+  availableStartCode: 0,
+  availableEndCode: 0,
+};
+
 export const AddInputButton = (props: Props) => {
   const { userList, setUserList } = props;
 
-  const [AddUserMode, setAddMode] = useState<AddUserMode>("student");
+  const [role, setRole] = useState<UserRole>("student");
 
   // 入力フォーム用のstate
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [age, setAge] = useState(0);
-  const [postCode, setPostCode] = useState("");
-  const [phone, setPhone] = useState("");
-  const [hobbies, setHobbies] = useState<string[]>([]);
-  const [url, setUrl] = useState("");
-  const [studyMinutes, setStudyMinutes] = useState(0);
-  const [taskCode, setTaskCode] = useState(0);
-  const [studyLangs, setStudyLangs] = useState<string[]>([]);
-  const [score, setScore] = useState(0);
-  const [experienceDays, setExperienceDays] = useState(0);
-  const [useLangs, setUseLangs] = useState<string[]>([]);
-  const [availableStartCode, setAvailableStartCode] = useState(0);
-  const [availableEndCode, setAvailableEndCode] = useState(0);
+  const [userForm, setUserForm] = useState<UserForm>(initUserForm);
 
   // 新規ユーザーを追加する関数
   const appendUser = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const {
+      name,
+      email,
+      age,
+      postCode,
+      phone,
+      hobbies,
+      url,
+      studyMinutes,
+      taskCode,
+      studyLangs,
+      score,
+      experienceDays,
+      useLangs,
+      availableStartCode,
+      availableEndCode,
+    } = userForm;
 
     // 名前が空文字の時は処理を戻す
     if (name.trim() === "") {
@@ -43,7 +83,7 @@ export const AddInputButton = (props: Props) => {
     const userCommon = {
       id: userList.length + 1,
       name,
-      role: AddUserMode,
+      role: role,
       email,
       age,
       postCode,
@@ -52,7 +92,7 @@ export const AddInputButton = (props: Props) => {
       url,
     };
 
-    if (AddUserMode === "student") {
+    if (role === "student") {
       const userStudent = {
         ...userCommon,
         studyMinutes,
@@ -73,6 +113,35 @@ export const AddInputButton = (props: Props) => {
     }
   };
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type } = e.target;
+
+    const key = name as keyof UserForm;
+    const stringArrayKeyOfUserForm = ["hobbies", "studyLangs", "useLangs"];
+
+    // UserFormのnumber型の値は数値型に変換
+    if (type === "number") {
+      setUserForm({
+        ...userForm,
+        [key]: Number(value),
+      });
+    }
+
+    // UserFormのstring[]は配列に変換
+    // それ以外は文字列に変換
+    else if (stringArrayKeyOfUserForm.includes(key)) {
+      setUserForm({
+        ...userForm,
+        [key]: [value],
+      });
+    } else {
+      setUserForm({
+        ...userForm,
+        [key]: value,
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="border p-5">
@@ -81,7 +150,7 @@ export const AddInputButton = (props: Props) => {
           <label
             htmlFor="studentRadioTab"
             className={
-              AddUserMode === "student"
+              role === "student"
                 ? "bg-sky-500 text-white px-2 py-3 rounded-lg"
                 : "bg-white border-2 text-sky-500 px-2 py-3 rounded-lg"
             }
@@ -93,13 +162,13 @@ export const AddInputButton = (props: Props) => {
             type="radio"
             id="studentRadioTab"
             name="radio"
-            onChange={() => setAddMode("student")}
-            checked={AddUserMode === "student"}
+            onChange={() => setRole("student")}
+            checked={role === "student"}
           />
           <label
             htmlFor="mentorRadioTab"
             className={
-              AddUserMode === "mentor"
+              role === "mentor"
                 ? "bg-sky-500 text-white px-2 py-3 rounded-lg"
                 : "bg-white border-2 text-sky-500 px-2 py-3 rounded-lg"
             }
@@ -111,8 +180,8 @@ export const AddInputButton = (props: Props) => {
             type="radio"
             id="mentorRadioTab"
             name="radio"
-            onChange={() => setAddMode("mentor")}
-            checked={AddUserMode === "mentor"}
+            onChange={() => setRole("mentor")}
+            checked={role === "mentor"}
           />
         </div>
         <form onSubmit={(e) => appendUser(e)} className="w-100">
@@ -123,8 +192,9 @@ export const AddInputButton = (props: Props) => {
             <input
               type="text"
               id="nameForm"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={userForm.name}
+              name="name"
+              onChange={(e) => handleChange(e)}
               required
               className="block border w-full my-1 rounded-sm text-gray-800"
             />
@@ -136,8 +206,9 @@ export const AddInputButton = (props: Props) => {
             <input
               type="email"
               id="emailForm"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userForm.email}
+              name="email"
+              onChange={(e) => handleChange(e)}
               required
               className="block border w-full my-1 rounded-sm text-gray-800"
             />
@@ -149,8 +220,9 @@ export const AddInputButton = (props: Props) => {
             <input
               type="number"
               id="ageForm"
-              value={age}
-              onChange={(e) => setAge(Number(e.target.value))}
+              value={userForm.age}
+              name="age"
+              onChange={(e) => handleChange(e)}
               required
               className="block border w-full my-1 rounded-sm text-gray-800"
             />
@@ -162,8 +234,9 @@ export const AddInputButton = (props: Props) => {
             <input
               type="text"
               id="postCodeForm"
-              value={postCode}
-              onChange={(e) => setPostCode(e.target.value)}
+              value={userForm.postCode}
+              name="postCode"
+              onChange={(e) => handleChange(e)}
               required
               className="block border w-full my-1 rounded-sm text-gray-800"
             />
@@ -175,8 +248,9 @@ export const AddInputButton = (props: Props) => {
             <input
               type="tel"
               id="phoneForm"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={userForm.phone}
+              name="phone"
+              onChange={(e) => handleChange(e)}
               required
               className="block border w-full my-1 rounded-sm text-gray-800"
             />
@@ -188,8 +262,9 @@ export const AddInputButton = (props: Props) => {
             <input
               type="text"
               id="hobbiesForm"
-              value={hobbies}
-              onChange={(e) => setHobbies([e.target.value])}
+              value={userForm.hobbies}
+              name="hobbies"
+              onChange={(e) => handleChange(e)}
               required
               className="block border w-full my-1 rounded-sm text-gray-800"
             />
@@ -201,13 +276,14 @@ export const AddInputButton = (props: Props) => {
             <input
               type="url"
               id="urlForm"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              value={userForm.url}
+              name="url"
+              onChange={(e) => handleChange(e)}
               required
               className="block border w-full my-1 rounded-sm text-gray-800"
             />
           </div>
-          {AddUserMode === "student" ? (
+          {role === "student" ? (
             <>
               <div>
                 <label htmlFor="studyMinutesForm" className="font-semibold">
@@ -216,8 +292,9 @@ export const AddInputButton = (props: Props) => {
                 <input
                   type="number"
                   id="studyMinutesForm"
-                  value={studyMinutes}
-                  onChange={(e) => setStudyMinutes(Number(e.target.value))}
+                  value={userForm.studyMinutes}
+                  name="studyMinutes"
+                  onChange={(e) => handleChange(e)}
                   required
                   className="block border w-full my-1 rounded-sm text-gray-800"
                 />
@@ -229,8 +306,9 @@ export const AddInputButton = (props: Props) => {
                 <input
                   type="number"
                   id="taskCodeForm"
-                  value={taskCode}
-                  onChange={(e) => setTaskCode(Number(e.target.value))}
+                  value={userForm.taskCode}
+                  name="taskCode"
+                  onChange={(e) => handleChange(e)}
                   required
                   className="block border w-full my-1 rounded-sm text-gray-800"
                 />
@@ -242,8 +320,9 @@ export const AddInputButton = (props: Props) => {
                 <input
                   type="text"
                   id="studyLangsForm"
-                  value={studyLangs}
-                  onChange={(e) => setStudyLangs([e.target.value])}
+                  value={userForm.studyLangs}
+                  name="studyLangs"
+                  onChange={(e) => handleChange(e)}
                   required
                   className="block border w-full my-1 rounded-sm text-gray-800"
                 />
@@ -255,8 +334,9 @@ export const AddInputButton = (props: Props) => {
                 <input
                   type="number"
                   id="scoreForm"
-                  value={score}
-                  onChange={(e) => setScore(Number(e.target.value))}
+                  value={userForm.score}
+                  name="score"
+                  onChange={(e) => handleChange(e)}
                   required
                   className="block border w-full my-1 rounded-sm text-gray-800"
                 />
@@ -271,8 +351,9 @@ export const AddInputButton = (props: Props) => {
                 <input
                   type="number"
                   id="experienceDaysForm"
-                  value={experienceDays}
-                  onChange={(e) => setExperienceDays(Number(e.target.value))}
+                  value={userForm.experienceDays}
+                  name="experienceDays"
+                  onChange={(e) => handleChange(e)}
                   required
                   className="block border w-full my-1 rounded-sm text-gray-800"
                 />
@@ -284,8 +365,9 @@ export const AddInputButton = (props: Props) => {
                 <input
                   type="text"
                   id="useLangsForm"
-                  value={useLangs}
-                  onChange={(e) => setUseLangs([e.target.value])}
+                  value={userForm.useLangs}
+                  name="useLangs"
+                  onChange={(e) => handleChange(e)}
                   required
                   className="block border w-full my-1 rounded-sm text-gray-800"
                 />
@@ -300,10 +382,9 @@ export const AddInputButton = (props: Props) => {
                 <input
                   type="number"
                   id="availableStartCodeForm"
-                  value={availableStartCode}
-                  onChange={(e) =>
-                    setAvailableStartCode(Number(e.target.value))
-                  }
+                  value={userForm.availableStartCode}
+                  name="availableStartCode"
+                  onChange={(e) => handleChange(e)}
                   required
                   className="block border w-full my-1 rounded-sm text-gray-800"
                 />
@@ -315,8 +396,9 @@ export const AddInputButton = (props: Props) => {
                 <input
                   type="number"
                   id="availableEndCode"
-                  value={availableEndCode}
-                  onChange={(e) => setAvailableEndCode(Number(e.target.value))}
+                  value={userForm.availableEndCode}
+                  name="availableEndCode"
+                  onChange={(e) => handleChange(e)}
                   required
                   className="block border w-full my-1 rounded-sm text-gray-800"
                 />
