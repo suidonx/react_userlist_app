@@ -1,15 +1,21 @@
 import type { STUDENT_TABLE_KEYS } from "../../constants/studentTable";
 import type { Student } from "../../types/student";
+import type { User } from "../../types/user";
 
 interface Props {
   columns: string[];
   keys: typeof STUDENT_TABLE_KEYS;
   studentList: Student[];
-  renderUserData: (user: Student, key: string) => string | number;
+  renderUserData: (
+    user: Student,
+    key: string,
+    userList: User[],
+  ) => string | number;
+  userList: User[];
 }
 
 export const StudentTable = (props: Props) => {
-  const { columns, keys, studentList, renderUserData } = props;
+  const { columns, keys, userList, studentList, renderUserData } = props;
 
   return (
     <>
@@ -31,7 +37,7 @@ export const StudentTable = (props: Props) => {
             <tr key={index}>
               {keys.map((key) => (
                 <td className="border border-gray-600 p-2 text-sm" key={key}>
-                  {renderUserData(user, key)}
+                  {renderUserData(user, key, userList)}
                 </td>
               ))}
             </tr>

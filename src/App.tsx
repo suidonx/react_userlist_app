@@ -20,6 +20,7 @@ import { isMentor, isStudent } from "./utils/typeGuard";
 import { AddInputButton } from "./components/button/AddInputButton";
 import { ChangeDisplayButton } from "./components/button/ChangeDisplayButton";
 import { SortButton } from "./components/button/SortButton";
+import { renderUserData } from "./utils/renderUserData";
 
 function App() {
   const {
@@ -33,7 +34,6 @@ function App() {
     sortScoreDesc,
     sortExperienceDaysAsc,
     sortExperienceDaysDesc,
-    renderUserData,
   } = useUserList();
 
   const [currentTable, setCurrentTable] = useState<UserRole | "all">("all");
@@ -80,6 +80,7 @@ function App() {
           columns={MENTOR_TABLE_COLUMNS}
           keys={MENTOR_TABLE_KEYS}
           mentorList={mentorList}
+          userList={userList}
           renderUserData={renderUserData}
         />
       )}
@@ -88,6 +89,7 @@ function App() {
           columns={STUDENT_TABLE_COLUMNS}
           keys={STUDENT_TABLE_KEYS}
           studentList={studentList}
+          userList={userList}
           renderUserData={renderUserData}
         />
       )}

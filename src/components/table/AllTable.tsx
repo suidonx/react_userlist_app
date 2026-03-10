@@ -5,7 +5,11 @@ interface Props {
   columns: string[];
   keys: typeof ALL_TABLE_KEYS;
   userList: User[];
-  renderUserData: (user: User, key: string) => string | number;
+  renderUserData: (
+    user: User,
+    key: string,
+    userList: User[],
+  ) => string | number;
 }
 export const AllTable = (props: Props) => {
   const { columns, keys, userList, renderUserData } = props;
@@ -30,7 +34,7 @@ export const AllTable = (props: Props) => {
             <tr key={index}>
               {keys.map((key: (typeof ALL_TABLE_KEYS)[number]) => (
                 <td className="border border-gray-600 p-1 text-sm" key={key}>
-                  {renderUserData(user, key)}
+                  {renderUserData(user, key, userList)}
                 </td>
               ))}
             </tr>

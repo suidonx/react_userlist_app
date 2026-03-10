@@ -1,15 +1,21 @@
 import type { MENTOR_TABLE_KEYS } from "../../constants/mentorTable";
 import type { Mentor } from "../../types/mentor";
+import type { User } from "../../types/user";
 
 interface Props {
   columns: string[];
   keys: typeof MENTOR_TABLE_KEYS;
   mentorList: Mentor[];
-  renderUserData: (user: Mentor, key: string) => string | number;
+  renderUserData: (
+    user: Mentor,
+    key: string,
+    userList: User[],
+  ) => string | number;
+  userList: User[];
 }
 
 export const MentorTable = (props: Props) => {
-  const { columns, keys, mentorList, renderUserData } = props;
+  const { columns, keys, userList, mentorList, renderUserData } = props;
 
   return (
     <>
@@ -31,7 +37,7 @@ export const MentorTable = (props: Props) => {
             <tr key={index}>
               {keys.map((key) => (
                 <td className="border border-gray-600 p-2 text-sm" key={key}>
-                  {renderUserData(user, key)}
+                  {renderUserData(user, key, userList)}
                 </td>
               ))}
             </tr>
