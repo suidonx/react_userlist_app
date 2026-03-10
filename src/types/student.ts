@@ -1,15 +1,9 @@
-export type Student = {
-  id: number;
-  name: string;
+import type { BaseUser } from "./baseUser";
+
+export interface Student extends BaseUser {
   role: "student";
-  email: string;
-  age: number;
-  postCode: string;
-  phone: string;
-  hobbies: string[];
-  url: string;
   studyMinutes: number;
   taskCode: number;
   studyLangs: string[];
   score: number;
-};
+}
