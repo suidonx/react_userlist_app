@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { AllTable } from "./components/table/AllTable";
 import { ALL_TABLE_COLUMNS, ALL_TABLE_KEYS } from "./constants/allTable";
 import {
   MENTOR_TABLE_COLUMNS,
@@ -10,8 +9,6 @@ import {
   STUDENT_TABLE_COLUMNS,
   STUDENT_TABLE_KEYS,
 } from "./constants/studentTable";
-import { StudentTable } from "./components/table/StudentTable";
-import { MentorTable } from "./components/table/MentorTable";
 
 import type { UserRole } from "./types/userRole";
 import { useUserList } from "./hooks/useUserList";
@@ -21,6 +18,7 @@ import { AddInputButton } from "./components/button/AddInputButton";
 import { ChangeDisplayButton } from "./components/button/ChangeDisplayButton";
 import { SortButton } from "./components/button/SortButton";
 import { renderUserData } from "./utils/renderUserData";
+import { UserTable } from "./components/table/UserTable";
 
 function App() {
   const {
@@ -68,29 +66,36 @@ function App() {
       />
 
       {currentTable === "all" && (
-        <AllTable
+        <UserTable
           columns={ALL_TABLE_COLUMNS}
           keys={ALL_TABLE_KEYS}
           userList={userList}
+          studentList={studentList}
+          mentorList={mentorList}
           renderUserData={renderUserData}
+          currentTable={currentTable}
         />
       )}
       {currentTable === "mentor" && (
-        <MentorTable
+        <UserTable
           columns={MENTOR_TABLE_COLUMNS}
           keys={MENTOR_TABLE_KEYS}
           mentorList={mentorList}
           userList={userList}
+          studentList={studentList}
           renderUserData={renderUserData}
+          currentTable={currentTable}
         />
       )}
       {currentTable === "student" && (
-        <StudentTable
+        <UserTable
           columns={STUDENT_TABLE_COLUMNS}
           keys={STUDENT_TABLE_KEYS}
           studentList={studentList}
           userList={userList}
+          mentorList={mentorList}
           renderUserData={renderUserData}
+          currentTable={currentTable}
         />
       )}
 
