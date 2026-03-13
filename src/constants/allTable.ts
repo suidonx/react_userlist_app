@@ -1,0 +1,41 @@
+export const ALL_TABLE_COLUMNS = [
+  "名前",
+  "ロール",
+  "メールアドレス",
+  "年齢",
+  "郵便番号",
+  "電話番号",
+  "趣味",
+  "URL",
+  "勉強時間",
+  "課題番号",
+  "勉強中の言語",
+  "ハピネススコア",
+  "対応可能なメンター",
+  "実務経験月数",
+  "現場で使っている言語",
+  "担当できる課題番号初め",
+  "担当できる課題番号終わり",
+  "対応可能な生徒",
+];
+
+export const ALL_TABLE_KEYS = [
+  "name",
+  "role",
+  "email",
+  "age",
+  "postCode",
+  "phone",
+  "hobbies",
+  "url",
+  "studyMinutes",
+  "taskCode",
+  "studyLangs",
+  "score",
+  "availableMentors", // USER_LISTとの差分
+  "experienceDays",
+  "useLangs",
+  "availableStartCode",
+  "availableEndCode",
+  "availableStudents", // USER_LISTとの差分
+] as const;
